@@ -1,6 +1,6 @@
 import unittest
 
-from analyzer import analyze_player_style, translate_term
+from analyzer import CIV_STYLE_PROFILES, TRANSLATIONS, analyze_player_style, english_term, translate_term
 
 
 class AnalyzerTests(unittest.TestCase):
@@ -37,6 +37,140 @@ class AnalyzerTests(unittest.TestCase):
 
     def test_translates_jin_dynasty(self):
         self.assertEqual(translate_term("jin_dynasty", "civilizations"), "金朝")
+
+    def test_translates_all_aoe4_civilizations_from_reference_table(self):
+        expected = {
+            "chinese": ("Chinese", "中国"),
+            "abbasid_dynasty": ("Abbasid Dynasty", "黑衣大食王朝"),
+            "delhi_sultanate": ("Delhi Sultanate", "德里苏丹国"),
+            "mongols": ("Mongols", "蒙古"),
+            "french": ("French", "法兰西"),
+            "holy_roman_empire": ("Holy Roman Empire", "神圣罗马帝国"),
+            "english": ("English", "英格兰"),
+            "rus": ("Rus", "罗斯"),
+            "japanese": ("Japanese", "日本"),
+            "byzantines": ("Byzantines", "拜占庭"),
+            "ottomans": ("Ottomans", "奥斯曼"),
+            "malians": ("Malians", "马里"),
+            "vikings": ("Vikings", "维京"),
+            "knights_templar": ("Knights Templar", "圣殿骑士团"),
+            "jin_dynasty": ("Jin Dynasty", "金朝"),
+            "zhu_xis_legacy": ("Zhu Xi's Legacy", "朱子遗训"),
+            "ayyubids": ("Ayyubids", "阿尤布"),
+            "tughlaq_dynasty": ("Tughlaq Dynasty", "图格鲁克王朝"),
+            "golden_horde": ("Golden Horde", "金帐汗国"),
+            "jeanne_darc": ("Jeanne d'Arc", "圣女贞德"),
+            "order_of_the_dragon": ("Order of the Dragon", "龙之骑士团"),
+            "house_of_lancaster": ("House of Lancaster", "兰开斯特王朝"),
+            "sengoku_daimyo": ("Sengoku Daimyo", "战国大名"),
+            "macedonian_dynasty": ("Macedonian Dynasty", "马其顿王朝"),
+        }
+
+        self.assertEqual(TRANSLATIONS["civilizations"], {key: value[1] for key, value in expected.items()})
+        self.assertEqual(
+            TRANSLATIONS["civilizations_english"],
+            {key: value[0] for key, value in expected.items()},
+        )
+        self.assertTrue(set(expected).issubset(CIV_STYLE_PROFILES))
+
+    def test_translates_civilization_names_with_apostrophes(self):
+        self.assertEqual(translate_term("Zhu Xi's Legacy", "civilizations"), "朱子遗训")
+        self.assertEqual(english_term("Jeanne d'Arc", "civilizations"), "Jeanne d'Arc")
+
+    def test_translates_aoe4_maps_from_reference_table(self):
+        expected = {
+            "altai": ("Altai", "阿尔泰"),
+            "ancient_spires": ("Ancient Spires", "古代尖山"),
+            "archipelago": ("Archipelago", "群岛"),
+            "atacama": ("Atacama", "阿塔卡马"),
+            "baltic": ("Baltic", "波罗的海"),
+            "black_forest": ("Black Forest", "黑森林"),
+            "boulder_bay": ("Boulder Bay", "巨石湾"),
+            "canal": ("Canal", "运河"),
+            "confluence": ("Confluence", "汇流处"),
+            "continental": ("Continental", "大陆"),
+            "danube_river": ("Danube River", "多瑙河"),
+            "dry_arabia": ("Dry Arabia", "干燥阿拉伯"),
+            "forest_ponds": ("Forest Ponds", "森林与池塘"),
+            "four_lakes": ("Four Lakes", "四个湖"),
+            "french_pass": ("French Pass", "法兰西隘口"),
+            "golden_heights": ("Golden Heights", "黄金高地"),
+            "gorge": ("Gorge", "峡谷"),
+            "hideout": ("Hideout", "藏身处"),
+            "highview": ("Highview", "高视野区"),
+            "hill_and_dale": ("Hill and Dale", "高山深谷"),
+            "king_of_the_hill": ("King of the Hill", "占山为王"),
+            "lakeside": ("Lakeside", "湖畔"),
+            "lipany": ("Lipany", "利帕尼"),
+            "marshland": ("Marshland", "沼泽地"),
+            "migration": ("Migration", "迁移"),
+            "mongolian_heights": ("Mongolian Heights", "蒙古高原"),
+            "mountain_clearing": ("Mountain Clearing", "山中空地"),
+            "mountain_pass": ("Mountain Pass", "隘口"),
+            "nagari": ("Nagari", "那格利"),
+            "oasis": ("Oasis", "绿洲"),
+            "prairie": ("Prairie", "草原"),
+            "dry_river": ("Dry River", "岩石河"),
+            "socotra": ("Socotra", "索科特拉岛"),
+            "pit": ("Pit", "深坑"),
+            "volcanic_island": ("Volcanic Island", "火山岛"),
+            "warring_islands": ("Warring Islands", "敌对岛屿"),
+            "waterholes": ("Waterholes", "水洼"),
+            "ponds": ("Ponds", "湿地"),
+            "carmel": ("Carmel", "卡梅尔"),
+            "african_waters": ("African Waters", "非洲海域"),
+            "cliff_side": ("Cliff Side", "悬崖边"),
+            "forts": ("Forts", "堡垒"),
+            "glade": ("Glade", "林间空地"),
+            "golden_pits": ("Golden Pits", "黄金之坑"),
+            "haywire": ("Haywire", "失控"),
+            "hidden_valley": ("Hidden Valley", "隐秘山谷"),
+            "himeyama": ("Himeyama", "姬山"),
+            "highland": ("Highland", "灌木丛"),
+            "turtle_ridge": ("Turtle Ridge", "海龟山脊"),
+            "enlightened_horizon": ("Enlightened Horizon", "启蒙眼界"),
+            "flankwoods": ("Flankwoods", "弗兰克伍兹森林"),
+            "hedgemaze": ("Hedgemaze", "树篱迷宫"),
+            "highwoods": ("Highwoods", "茂密树林"),
+            "mountain_lakes": ("Mountain Lakes", "山间湖泊"),
+            "relic_river": ("Relic River", "遗迹河"),
+            "rugged": ("Rugged", "崎岖之地"),
+            "shadow_lake": ("Shadow Lake", "影子湖"),
+            "sunkenlands": ("Sunkenlands", "沉没之地"),
+            "wasteland": ("Wasteland", "荒地"),
+            "waterlanes": ("Waterlanes", "水道"),
+            "canyon": ("Canyon", "大峡谷"),
+            "cliffsanity": ("Cliffsanity", "悬崖疯狂"),
+            "craters": ("Craters", "陨石坑"),
+            "dungeon": ("Dungeon", "地牢"),
+            "michi": ("Michi", "开道"),
+            "nomadic_ridges": ("Nomadic Ridges", "游牧山脊"),
+            "nomadic_tarns": ("Nomadic Tarns", "游牧湖群"),
+            "ocean_gateway": ("Ocean Gateway", "海之门户"),
+            "fangs": ("Fangs", "尖牙"),
+            "ascension": ("Ascension", "飞升"),
+            "snake_river": ("Snake River", "蛇河"),
+            "west_lake": ("West Lake", "西湖"),
+            "acropolis": ("Acropolis", "卫城"),
+            "channel": ("Channel", "海峡"),
+            "haunted_gulch": ("Haunted Gulch", "阴森幽谷"),
+            "narrows": ("Narrows", "狭窄区域"),
+            "peagee": ("Peagee", "佩艾吉"),
+            "plains": ("Plains", "平原"),
+            "rhinelands": ("Rhinelands", "莱茵兰"),
+            "river_kingdom": ("River Kingdom", "河流王国"),
+            "rolling_rivers": ("Rolling Rivers", "奔流"),
+            "wadden_sea": ("Wadden Sea", "瓦登海"),
+        }
+
+        for key, (english, chinese) in expected.items():
+            self.assertEqual(english_term(key, "maps"), english)
+            self.assertEqual(translate_term(key, "maps"), chinese)
+
+    def test_translates_map_aliases_used_by_api(self):
+        self.assertEqual(translate_term("high_view", "maps"), "高视野区")
+        self.assertEqual(english_term("rocky_river", "maps"), "Dry River")
+        self.assertEqual(translate_term("wetlands", "maps"), "湿地")
 
     def test_filters_games_by_selected_leaderboard(self):
         games = {
