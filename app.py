@@ -121,7 +121,7 @@ class AoE4AnalyzerWindow(QMainWindow):
 
         controls = QHBoxLayout()
         self.search_input = QLineEdit()
-        self.search_input.setPlaceholderText("输入玩家名，至少 3 个字符后自动联想")
+        self.search_input.setPlaceholderText("输入玩家名，1-2 字符按回车精确搜索，3 个字符后自动联想")
         self.completer = QCompleter(self.completion_model, self.search_input)
         self.completer.setCaseSensitivity(Qt.CaseSensitivity.CaseInsensitive)
         self.completer.setCompletionMode(QCompleter.CompletionMode.PopupCompletion)
@@ -333,7 +333,7 @@ class AoE4AnalyzerWindow(QMainWindow):
             self.autocomplete_request_id += 1
             self.players = []
             self.result_list.clear()
-            self.status_label.setText("至少输入 3 个字符后自动联想" if query else "就绪")
+            self.status_label.setText("1-2 个字符可按回车精确搜索；3 个字符后自动联想" if query else "就绪")
             return
 
         self.autocomplete_timer.start()
@@ -415,18 +415,18 @@ class AoE4AnalyzerWindow(QMainWindow):
 
     def search_players(self) -> None:
         query = self.search_input.text().strip()
-        if len(query) < 3:
-            QMessageBox.warning(self, "输入太短", "请输入至少 3 个字符。")
+        if not query:
+            QMessageBox.warning(self, "输入为空", "请输入玩家名。")
             return
         self.autocomplete_timer.stop()
         self.autocomplete_request_id += 1
         self.output.clear()
-        self.player_header.setText("搜索中...")
+        self.player_header.setText("精确搜索中..." if len(query) < 3 else "搜索中...")
         self.result_list.clear()
         self.run_worker(
             self.client.search_players,
             self.handle_search_results,
-            "正在搜索玩家...",
+            "正在精确搜索玩家..." if len(query) < 3 else "正在搜索玩家...",
             query,
         )
 

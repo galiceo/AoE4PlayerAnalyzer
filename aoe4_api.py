@@ -58,14 +58,26 @@ class Aoe4WorldClient:
         self.cache.set(cache_key, data)
         return data
 
-    def search_players(self, query: str, page: int = 1) -> dict[str, Any]:
+    def search_players(
+        self,
+        query: str,
+        page: int = 1,
+        exact: bool | None = None,
+    ) -> dict[str, Any]:
         query = query.strip()
-        if len(query) < 3:
-            raise ValueError("Player name must be at least 3 characters.")
+        if not query:
+            raise ValueError("Player name cannot be empty.")
+
+        if exact is None:
+            exact = len(query) < 3
+
+        params: dict[str, Any] = {"query": query, "page": page}
+        if exact:
+            params["exact"] = "true"
 
         return self._get_json(
             "/players/search",
-            {"query": query, "page": page},
+            params,
             ttl_seconds=600,
         )
 
